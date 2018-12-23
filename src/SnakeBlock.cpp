@@ -59,22 +59,9 @@ void SnakeBlock::setDir(int val)
 
     if(val != where && !change){
 
-        for(int i=0;i<4;i++){
-
-            if(val == i){
-                dir[i] = true;
-                continue;
-            }
-            dir[i] = false;
-        }
-
         where = val;
-
         change = true;
     }
-
-
-
 }
 
 void SnakeBlock::update(sf::Time elapsed)
@@ -86,21 +73,14 @@ void SnakeBlock::update(sf::Time elapsed)
     if(upd >= 0.5){
         upd = 0;
 
-        for(int i=0;i<4;i++){
-            if(dir[i]){
-                pos = i;
-                break;
-            }
-        }
-
         if(next != NULL && prev != NULL){
-            if(prev->dir[pos] != dir[pos]){
+            if(prev->where != where){
                 sprite.setTexture(asset[5]);
-                rot = nRotate();
+                rot = metodoLanciani();
             }
             else{
                 sprite.setTexture(asset[1]);
-                if(pos == 0 || pos == 2)
+                if(where == 0 || where == 2)
                     rot = 0;
                 else
                     rot = 1;
@@ -118,7 +98,7 @@ void SnakeBlock::update(sf::Time elapsed)
         }
 
 
-        switch(pos){
+        switch(where){
 
         //DX
         case 0:
@@ -150,37 +130,17 @@ void SnakeBlock::update(sf::Time elapsed)
 
 int SnakeBlock::metodoLanciani()
 {
-    int vet[4] = {2,3,0,1};
+    int magicMatrix[4][4] = {
+                                {1,1,0,2},
+                                {3,2,2,0},
+                                {0,0,3,3},
+                                {0,0,1,0}
+                            };
 
     if(next == NULL)
-        return vet[prev->where];
+        return magicMatrix[prev->where][prev->where];
+    if(prev == NULL)
+        return magicMatrix[where][where];
 
-    return vet[where];
-}
-
-
-int SnakeBlock::nRotate()
-{
-
-    if(prev != NULL && next != NULL){
-
-        //DX DOWN SX UP
-       if((prev->dir[3] && next->dir[2]) || (prev->dir[0] && next->dir[1])){
-            return 1;
-        }
-
-        else if((prev->dir[2] && next->dir[1]) || (prev->dir[3] && next->dir[0])){
-            return 0;
-        }
-
-        else if((prev->dir[0] && next->dir[3]) || (prev->dir[1] && next->dir[2])){
-            return 2;
-        }
-
-        else if((prev->dir[1] && next->dir[0]) || (prev->dir[2] && next->dir[3])){
-            return 3;
-        }
-    }
-
-    return 0;
+    return magicMatrix[prev->where][next->where];
 }

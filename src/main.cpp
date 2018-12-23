@@ -3,6 +3,8 @@
 #include <vector>
 #include <iostream>
 
+#define OFFSET 64
+
 
 using namespace std;
 
@@ -19,12 +21,13 @@ int main()
 {
 
     int n_text = 0;
-    sf::Sprite terrain;
+    sf::Sprite terrain,apple;
+
+    sf::Transform applePos;
+    applePos.translate(64,64);
 
 
-
-
-    sf::RenderWindow window(sf::VideoMode(800, 800), "SFML works!");
+    sf::RenderWindow window(sf::VideoMode(32*24, 32*24), "SFML works!");
     sf::Clock clock;
     for(int i=0;i<2;i++){
         for(int j=0;j<3;j++){
@@ -39,15 +42,20 @@ int main()
     }
 
     terrain.setTexture(asset[0]);
+    apple.setTexture(asset[3]);
+    apple.setOrigin(16,16);
 
 
-    snake.push_back(new SnakeBlock(96,0,&asset[0]));
-    snake.push_back(new SnakeBlock(64,0,&asset[0]));
-    snake.push_back(new SnakeBlock(32,0,&asset[0]));
+    snake.push_back(new SnakeBlock(96+OFFSET,32+OFFSET,&asset[0]));
+    snake.push_back(new SnakeBlock(64+OFFSET,32+OFFSET,&asset[0]));
+    snake.push_back(new SnakeBlock(32+OFFSET,32+OFFSET,&asset[0]));
+    snake.push_back(new SnakeBlock(0+OFFSET,32+OFFSET,&asset[0]));
     snake[0]->setNext(snake[1]);
     snake[1]->setPrev(snake[0]);
     snake[1]->setNext(snake[2]);
     snake[2]->setPrev(snake[1]);
+    snake[2]->setNext(snake[3]);
+    snake[3]->setPrev(snake[2]);
 
     while (window.isOpen())
     {
@@ -77,10 +85,10 @@ int main()
 
         window.clear();
 
-        for(int i=0;i<10;i++){
-            for(int j=0;j<10;j++){
+        for(int i=0;i<20;i++){
+            for(int j=0;j<20;j++){
                 sf::Transform t;
-                t.translate(i*32,j*32);
+                t.translate(i*32+OFFSET,j*32+OFFSET);
                 window.draw(terrain,t);
             }
         }
@@ -90,7 +98,7 @@ int main()
             snake[i]->render(&window);
         }
 
-
+        window.draw(apple,applePos);
         window.display();
     }
 
