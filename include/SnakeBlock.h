@@ -16,6 +16,7 @@ class SnakeBlock
         int Gety() { return y; }
         void Sety(int val) { y = val; }
         void setDir(int val);
+        int getDir(){return where;}
         void moveSnake(float x,float y){
             this->x += x;
             this->y += y;
@@ -38,8 +39,7 @@ class SnakeBlock
         float y;
         int rot;
         int where;
-        bool dir[4],change;
-        float upd;
+        bool change;
         sf::Sprite sprite;
         sf::Texture texture;
         sf::Texture* asset;

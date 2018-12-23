@@ -11,11 +11,13 @@ using namespace std;
 sf::Texture asset[6];
 sf::Sprite sprite[6];
 
-int n = 3;
+int tri=0;
 
 
-SnakeBlock* generateSnakeBody();
+void generateSnakeBody();
 std::vector<SnakeBlock*> snake;
+
+float up = 0;
 
 int main()
 {
@@ -24,10 +26,10 @@ int main()
     sf::Sprite terrain,apple;
 
     sf::Transform applePos;
-    applePos.translate(64,64);
+    applePos.translate(64,32);
 
 
-    sf::RenderWindow window(sf::VideoMode(32*24, 32*24), "SFML works!");
+    sf::RenderWindow window(sf::VideoMode(32*24, 32*24), "Caterpillar");
     sf::Clock clock;
     for(int i=0;i<2;i++){
         for(int j=0;j<3;j++){
@@ -46,21 +48,18 @@ int main()
     apple.setOrigin(16,16);
 
 
-    snake.push_back(new SnakeBlock(96+OFFSET,32+OFFSET,&asset[0]));
-    snake.push_back(new SnakeBlock(64+OFFSET,32+OFFSET,&asset[0]));
-    snake.push_back(new SnakeBlock(32+OFFSET,32+OFFSET,&asset[0]));
-    snake.push_back(new SnakeBlock(0+OFFSET,32+OFFSET,&asset[0]));
-    snake[0]->setNext(snake[1]);
-    snake[1]->setPrev(snake[0]);
-    snake[1]->setNext(snake[2]);
-    snake[2]->setPrev(snake[1]);
-    snake[2]->setNext(snake[3]);
-    snake[3]->setPrev(snake[2]);
+    snake.push_back(new SnakeBlock(32*6+OFFSET,32+OFFSET,&asset[0]));
+    snake[0]->setDir(0);
+
+    for(int i=0;i<2;i++)
+        generateSnakeBody();
+
 
     while (window.isOpen())
     {
         sf::Time elapsed = clock.restart();
         sf::Event event;
+        up += elapsed.asSeconds();
         while (window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
@@ -94,23 +93,48 @@ int main()
         }
 
         for(int i = snake.size()-1;i>=0;i--){
-            snake[i]->update(elapsed);
+            if(up >= 0.1){
+                snake[i]->update(elapsed);
+            }
             snake[i]->render(&window);
         }
 
+        if(up >= 0.1) up = 0;
+
         window.draw(apple,applePos);
         window.display();
+        tri++;
+        if(tri>=1000){
+            generateSnakeBody();
+            tri = 0;
+        }
     }
 
     return 0;
 }
 
-SnakeBlock* generateSnakeBody()
+void generateSnakeBody()
 {
-    SnakeBlock* tail = snake[n-1];
-    SnakeBlock* body = new SnakeBlock(0,0,&asset[0]);
+    //DX,DOWN,SX UP
+    int magicMatrix[4][2] = {
+                                {-1,0},
+                                {0,-1},
+                                {1,0},
+                                {0,1},
+                            };
+    SnakeBlock* tail = snake[snake.size()-1];
+    int dir = tail->getDir();
 
-    body->setTexture(asset[1]);
 
-    return body;
+    SnakeBlock* body = new SnakeBlock(tail->Getx()+(32)*magicMatrix[dir][0],
+                                      tail->Gety()+(32)*magicMatrix[dir][1],
+                                      &asset[0]);
+
+    body->setTexture(asset[2]);
+    body->setDir(dir);
+    tail->setNext(body);
+    body->setPrev(tail);
+
+    snake.push_back(body);
 }
+
