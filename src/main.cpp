@@ -32,7 +32,7 @@ int main()
     bool game = true;
     sf::Sprite terrain,apple;
 
-    sf::RenderWindow window(sf::VideoMode(32*N, 32*N), "Caterpillar");
+    sf::RenderWindow window(sf::VideoMode(31*N, 31*N), "Caterpillar");
     sf::Clock clock;
 
      srand((unsigned)time(NULL));
@@ -54,6 +54,7 @@ int main()
     applePos.translate(x,y);
     apple.setTexture(asset[3]);
     apple.setOrigin(16,16);
+    terrain.setOrigin(16,16);
 
 
     snake.push_back(new SnakeBlock(32*6+OFFSET,32+OFFSET,&asset[0]));
@@ -148,8 +149,8 @@ bool checkCollided()
 {
     if(snake[0]->Getx() == x && snake[0]->Gety() == y){
         generateSnakeBody();
-        x = rand()%N *32;
-        y = rand()%N *32;
+        x = rand()%(17) * 32 + 64;
+        y = rand()%(17) * 32 + 64;
         applePos = applePos.Identity;
         applePos.translate(x,y);
         printf("%d,%d\n",x,y);

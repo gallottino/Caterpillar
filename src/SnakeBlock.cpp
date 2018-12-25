@@ -98,6 +98,14 @@ void SnakeBlock::update(sf::Time elapsed)
 
     }
 
+    if(x <= 32)
+        x = 19*32;
+    else if(x>=20*32)
+        x = 64;
+    if(y <= 32)
+        y = 19*32;
+    else if(y >= 20*32)
+        y = 64;
 
     if(prev != NULL)
         setDir(prev->where);
