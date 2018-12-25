@@ -11,9 +11,9 @@ class SnakeBlock
         SnakeBlock(float x,float y,sf::Texture* asset);
         ~SnakeBlock();
 
-        int Getx() { return x; }
+        float Getx() { return x; }
         void Setx(int val) { x = val; }
-        int Gety() { return y; }
+        float Gety() { return y; }
         void Sety(int val) { y = val; }
         void setDir(int val);
         int getDir(){return where;}

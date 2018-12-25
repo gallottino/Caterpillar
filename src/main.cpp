@@ -4,6 +4,7 @@
 #include <iostream>
 
 #define OFFSET 64
+#define N 22
 
 
 using namespace std;
@@ -15,22 +16,27 @@ int tri=0;
 
 
 void generateSnakeBody();
+bool checkCollided();
+
 std::vector<SnakeBlock*> snake;
 
 float up = 0;
+int x,y;
+sf::Transform applePos;
 
 int main()
 {
 
     int n_text = 0;
+
+    bool game = true;
     sf::Sprite terrain,apple;
 
-    sf::Transform applePos;
-    applePos.translate(64,32);
-
-
-    sf::RenderWindow window(sf::VideoMode(32*24, 32*24), "Caterpillar");
+    sf::RenderWindow window(sf::VideoMode(32*N, 32*N), "Caterpillar");
     sf::Clock clock;
+
+     srand((unsigned)time(NULL));
+
     for(int i=0;i<2;i++){
         for(int j=0;j<3;j++){
             if(!asset[n_text].loadFromFile("snake-asset.png",sf::IntRect((j)*32, (i)*32, 32, 32))){
@@ -42,18 +48,18 @@ int main()
             }
         }
     }
-
+    x = rand()%N *32;
+    y = rand()%N *32;
     terrain.setTexture(asset[0]);
+    applePos.translate(x,y);
     apple.setTexture(asset[3]);
     apple.setOrigin(16,16);
 
 
     snake.push_back(new SnakeBlock(32*6+OFFSET,32+OFFSET,&asset[0]));
     snake[0]->setDir(0);
-
-    for(int i=0;i<2;i++)
+    for(int i=0;i<3;i++)
         generateSnakeBody();
-
 
     while (window.isOpen())
     {
@@ -84,8 +90,8 @@ int main()
 
         window.clear();
 
-        for(int i=0;i<20;i++){
-            for(int j=0;j<20;j++){
+        for(int i=0;i<18;i++){
+            for(int j=0;j<18;j++){
                 sf::Transform t;
                 t.translate(i*32+OFFSET,j*32+OFFSET);
                 window.draw(terrain,t);
@@ -93,21 +99,21 @@ int main()
         }
 
         for(int i = snake.size()-1;i>=0;i--){
-            if(up >= 0.1){
+            if(up >= 0.1 && game){
                 snake[i]->update(elapsed);
             }
             snake[i]->render(&window);
         }
 
-        if(up >= 0.1) up = 0;
+        if(up >= 0.1){
+            if(checkCollided()){
+                game = false;
+            }
+            up = 0;
+        }
 
         window.draw(apple,applePos);
         window.display();
-        tri++;
-        if(tri>=1000){
-            generateSnakeBody();
-            tri = 0;
-        }
     }
 
     return 0;
@@ -138,3 +144,22 @@ void generateSnakeBody()
     snake.push_back(body);
 }
 
+bool checkCollided()
+{
+    if(snake[0]->Getx() == x && snake[0]->Gety() == y){
+        generateSnakeBody();
+        x = rand()%N *32;
+        y = rand()%N *32;
+        applePos = applePos.Identity;
+        applePos.translate(x,y);
+        printf("%d,%d\n",x,y);
+        return false;
+    }
+
+    for(int i=1;i<snake.size();i++){
+        if(snake[0]->Getx() - snake[i]->Getx() == 0 &&
+           snake[0]->Gety() - snake[i]->Gety() == 0)
+            return true;
+    }
+    return false;
+}

@@ -121,5 +121,6 @@ int SnakeBlock::metodoLanciani()
     if(prev == NULL)
         return magicMatrix[where][where];
 
+    /*BODY*/
     return magicMatrix[prev->where][next->where];
 }
