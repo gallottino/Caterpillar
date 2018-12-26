@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <SnakeBlock.h>
 #include <vector>
+#include <string>
 #include <iostream>
 
 #define OFFSET 64
@@ -23,8 +24,9 @@ void restart();
 std::vector<SnakeBlock*> snake;
 
 float up = 0;
-int x,y;
+int x,y,n=0;
 sf::Transform applePos;
+sf::Text text_point;
 
 int main()
 {
@@ -32,12 +34,44 @@ int main()
     int n_text = 0;
 
     bool game = true;
-    sf::Sprite terrain,apple;
-
-    sf::RenderWindow window(sf::VideoMode(31*N, 31*N), "Caterpillar");
+    sf::Sprite terrain,apple,apple_point;
+    sf::RenderWindow window(sf::VideoMode(31*N, 30*N), "Caterpillar");
     sf::Clock clock;
+    sf::Font font;
+    sf::Transform point;
+    sf::Text title,options,author;
+    srand((unsigned)time(NULL));
 
-     srand((unsigned)time(NULL));
+
+    if (!font.loadFromFile("arial.ttf"))
+    {
+        // error...
+    }
+    else{
+        title.setFont(font);
+        title.setString("CATERPILLAR");
+        title.setCharacterSize(44);
+        title.setStyle(sf::Text::Bold);
+        title.setPosition(270,0);
+
+        text_point.setFont(font);
+        text_point.setString(std::to_string(n));
+        text_point.setCharacterSize(30);
+        text_point.setStyle(sf::Text::Bold);
+        text_point.setPosition(75,10);
+
+        options.setFont(font);
+        options.setString("PRESS R TO RESTART");
+        options.setCharacterSize(32);
+        options.setStyle(sf::Text::Bold);
+        options.setPosition(30,620);
+
+        author.setFont(font);
+        author.setString("AUTHOR: GALLOTTINO");
+        author.setCharacterSize(32);
+        author.setStyle(sf::Text::Bold);
+        author.setPosition(430,620);
+    }
 
     for(int i=0;i<2;i++){
         for(int j=0;j<3;j++){
@@ -54,7 +88,9 @@ int main()
     y = rand()%N *32;
     terrain.setTexture(asset[0]);
     applePos.translate(x,y);
+    point.translate(40,10);
     apple.setTexture(asset[3]);
+    apple_point.setTexture(asset[3]);
     apple.setOrigin(16,16);
     terrain.setOrigin(16,16);
 
@@ -119,6 +155,11 @@ int main()
         }
 
         window.draw(apple,applePos);
+        window.draw(apple_point,point);
+        window.draw(title);
+        window.draw(text_point);
+        window.draw(options);
+        window.draw(author);
         window.display();
     }
 
@@ -160,7 +201,9 @@ bool checkCollided()
         y = rand()%(17) * 32 + 64;
         applePos = applePos.Identity;
         applePos.translate(x,y);
-        printf("%d,%d\n",x,y);
+        //printf("%d,%d\n",x,y);
+        n++;
+        text_point.setString(std::to_string(n));
         return false;
     }
 
@@ -188,5 +231,6 @@ void restart()
     snake[0]->setDir(0);
     for(int i=0;i<3;i++)
         generateSnakeBody();
-
+    n=0;
+    text_point.setString(std::to_string(n));
 }
