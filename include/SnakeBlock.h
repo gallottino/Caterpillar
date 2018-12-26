@@ -29,11 +29,13 @@ class SnakeBlock
 
         void setNext(SnakeBlock* block){next = block;}
         void setPrev(SnakeBlock* block){prev = block;}
+        void chooseTexture();
 
     private:
 
         int nRotate();
         int metodoLanciani();
+
 
         float x;
         float y;

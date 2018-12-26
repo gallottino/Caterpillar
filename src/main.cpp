@@ -17,6 +17,8 @@ int tri=0;
 
 void generateSnakeBody();
 bool checkCollided();
+void deleteSnake();
+void restart();
 
 std::vector<SnakeBlock*> snake;
 
@@ -57,10 +59,7 @@ int main()
     terrain.setOrigin(16,16);
 
 
-    snake.push_back(new SnakeBlock(32*6+OFFSET,32+OFFSET,&asset[0]));
-    snake[0]->setDir(0);
-    for(int i=0;i<3;i++)
-        generateSnakeBody();
+    restart();
 
     while (window.isOpen())
     {
@@ -71,22 +70,28 @@ int main()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
+            if(game)
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+                    // DIR{DX,DOWN,SX,UP}
+                    snake[0]->setDir(1);
 
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-                // DIR{DX,DOWN,SX,UP}
-                snake[0]->setDir(1);
+                else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+                    // DIR{DX,DOWN,SX,UP}
+                    snake[0]->setDir(3);
 
-            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-                // DIR{DX,DOWN,SX,UP}
-                snake[0]->setDir(3);
+                else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+                    // DIR{DX,DOWN,SX,UP}
+                    snake[0]->setDir(2);
 
-            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-                // DIR{DX,DOWN,SX,UP}
-                snake[0]->setDir(2);
+                else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+                    // DIR{DX,DOWN,SX,UP}
+                    snake[0]->setDir(0);
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)){
+                deleteSnake();
+                restart();
+                game = true;
+            }
 
-            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-                // DIR{DX,DOWN,SX,UP}
-                snake[0]->setDir(0);
         }
 
         window.clear();
@@ -141,6 +146,8 @@ void generateSnakeBody()
     body->setDir(dir);
     tail->setNext(body);
     body->setPrev(tail);
+    body->chooseTexture();
+    tail->chooseTexture();
 
     snake.push_back(body);
 }
@@ -159,8 +166,27 @@ bool checkCollided()
 
     for(int i=1;i<snake.size();i++){
         if(snake[0]->Getx() - snake[i]->Getx() == 0 &&
-           snake[0]->Gety() - snake[i]->Gety() == 0)
-            return true;
+           snake[0]->Gety() - snake[i]->Gety() == 0){
+                return true;
+           }
     }
     return false;
+}
+
+void deleteSnake()
+{
+    int siz = snake.size();
+    for(int i=0;i<siz;i++){
+        snake.pop_back();
+    }
+
+}
+
+void restart()
+{
+    snake.push_back(new SnakeBlock(32*6+OFFSET,32+OFFSET,&asset[0]));
+    snake[0]->setDir(0);
+    for(int i=0;i<3;i++)
+        generateSnakeBody();
+
 }

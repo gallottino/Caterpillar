@@ -47,34 +47,13 @@ void SnakeBlock::setDir(int val)
         where = val;
         change = true;
     }
+
 }
 
 void SnakeBlock::update(sf::Time elapsed)
 {
-    /*SETTING TEXTURES */
-    if(next != NULL && prev != NULL){
-        if(prev->where != where){
-            sprite.setTexture(asset[5]);
-            rot = metodoLanciani();
-        }
-        else{
-            sprite.setTexture(asset[1]);
-            if(where == 0 || where == 2)
-                rot = 0;
-            else
-                rot = 1;
-        }
 
-    }
-
-    else{
-        if(next == NULL)
-            sprite.setTexture(asset[2]);
-        else
-            sprite.setTexture(asset[4]);
-
-        rot = metodoLanciani();
-    }
+    chooseTexture();
 
     /*MOVE SNAKE*/
     switch(where){
@@ -111,6 +90,36 @@ void SnakeBlock::update(sf::Time elapsed)
         setDir(prev->where);
 
     change = false;
+}
+
+
+
+void SnakeBlock::chooseTexture()
+{
+    /*SETTING TEXTURES */
+    if(next != NULL && prev != NULL){
+        if(prev->where != where){
+            sprite.setTexture(asset[5]);
+            rot = metodoLanciani();
+        }
+        else{
+            sprite.setTexture(asset[1]);
+            if(where == 0 || where == 2)
+                rot = 0;
+            else
+                rot = 1;
+        }
+
+    }
+
+    else{
+        if(next == NULL)
+            sprite.setTexture(asset[2]);
+        else
+            sprite.setTexture(asset[4]);
+
+        rot = metodoLanciani();
+    }
 }
 
 int SnakeBlock::metodoLanciani()
