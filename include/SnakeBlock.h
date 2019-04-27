@@ -34,7 +34,7 @@ class SnakeBlock
     private:
 
         int nRotate();
-        int metodoLanciani();
+        int findRotation();
 
 
         float x;
