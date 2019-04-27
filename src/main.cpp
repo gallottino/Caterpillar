@@ -43,7 +43,7 @@ int main()
     srand((unsigned)time(NULL));
 
 
-    if (!font.loadFromFile("arial.ttf"))
+    if (!font.loadFromFile("../arial.ttf"))
     {
         // error...
     }
@@ -75,7 +75,7 @@ int main()
 
     for(int i=0;i<2;i++){
         for(int j=0;j<3;j++){
-            if(!asset[n_text].loadFromFile("snake-asset.png",sf::IntRect((j)*32, (i)*32, 32, 32))){
+            if(!asset[n_text].loadFromFile("../snake-asset.png",sf::IntRect((j)*32, (i)*32, 32, 32))){
 
             }
             else{

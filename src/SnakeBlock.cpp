@@ -100,7 +100,7 @@ void SnakeBlock::chooseTexture()
     if(next != NULL && prev != NULL){
         if(prev->where != where){
             sprite.setTexture(asset[5]);
-            rot = metodoLanciani();
+            rot = findRotation();
         }
         else{
             sprite.setTexture(asset[1]);
@@ -118,11 +118,11 @@ void SnakeBlock::chooseTexture()
         else
             sprite.setTexture(asset[4]);
 
-        rot = metodoLanciani();
+        rot = findRotation();
     }
 }
 
-int SnakeBlock::metodoLanciani()
+int SnakeBlock::findRotation()
 {
     int magicMatrix[4][4] = {
                                 {1,1,0,2},
