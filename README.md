@@ -20,6 +20,10 @@ Follow a simple screen with the final Result:
 
 ![Caterpillar](https://user-images.githubusercontent.com/33552039/56850902-0b7eeb00-6909-11e9-8a10-f2891498bf68.png)
 
+### Assets
+![Assets](https://github.com/gallottino/Caterpillar/edit/master/snake-asset.png)
+
+
 
 ## Usefull Links
 
