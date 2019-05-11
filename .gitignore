@@ -37,5 +37,5 @@
 *.layout
 
 # CLion Project
-.idea
+.idea/
 cmake-build-debug/
