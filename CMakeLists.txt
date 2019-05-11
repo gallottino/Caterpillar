@@ -14,7 +14,6 @@ add_executable(Caterpillar ${SOURCE_FILES} ${HEADER_FILES})
 target_include_directories(Caterpillar PRIVATE ${YOUR_DIRECTORY}/include/)
 
 
-
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_modules")
 find_package(SFML REQUIRED system window graphics network audio)
 if (SFML_FOUND)
