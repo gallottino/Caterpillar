@@ -1,3 +1,0 @@
-C:/Users/dgall/Documents/Progetti/SFML/Caterpillar/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/dgall/Documents/Progetti/SFML/Caterpillar/cmake-build-debug/CMakeFiles/Caterpillar.dir
-C:/Users/dgall/Documents/Progetti/SFML/Caterpillar/cmake-build-debug/CMakeFiles/rebuild_cache.dir
