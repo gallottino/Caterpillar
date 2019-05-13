@@ -21,8 +21,7 @@ Follow a simple screen with the final Result:
 ![Caterpillar](https://user-images.githubusercontent.com/33552039/56850902-0b7eeb00-6909-11e9-8a10-f2891498bf68.png)
 
 ### Assets
-![Assets](https://github.com/gallottino/Caterpillar/edit/master/snake-asset.png)
-
+![snake-asset](https://user-images.githubusercontent.com/33552039/57641881-632e7f00-75b6-11e9-9f3e-c2b23a03cacb.png)
 
 
 ## Usefull Links
