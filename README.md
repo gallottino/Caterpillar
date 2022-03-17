@@ -1,7 +1,7 @@
 # Caterpillar - A Snake clone
 
 Caterpillar is a game written in C++ to test the SFML library.
-All resources are drawing by myself in pixel Art. The Caterpillar asset is the smallest possible.
+All resources has been drawn by myself in pixel Art. The Caterpillar asset is the smallest possible.
 Every rotation of asset is calculated in a single access to a matrix in which are stored the n times of 90 degrees rotation:
 the magic Matrix has on i index the direction of previous snakeBlock and on j index the direction of nest snakeBlock
 
